@@ -12,20 +12,17 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 class KafkaService<T> implements Closeable {
-
     private final KafkaConsumer<String, T> consumer;
     private final ConsumerFunction parse;
 
     KafkaService(String groupId, String topic, ConsumerFunction parse, Class<T> type) {
         this(parse, groupId, type);
         consumer.subscribe(Collections.singletonList(topic));
-
     }
 
     KafkaService(String groupId, Pattern topic, ConsumerFunction parse, Class<T> type) {
         this(parse, groupId, type);
         consumer.subscribe(topic);
-
     }
 
     private KafkaService(ConsumerFunction parse, String groupId, Class<T> type) {
@@ -42,7 +39,6 @@ class KafkaService<T> implements Closeable {
                     parse.consume(record);
                 }
             }
-
         }
     }
 
@@ -61,5 +57,4 @@ class KafkaService<T> implements Closeable {
     public void close() {
         consumer.close();
     }
-
 }
